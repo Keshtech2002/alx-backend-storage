@@ -25,12 +25,6 @@ if __name__ == "__main__":
     # number of status checks
     n_statuses = len(list(nginx_logs.find({'method': 'GET', 'path': '/status'})))
 
-    sorted_ips = nginx_logs.aggregate([
-      {'$group': {'_id': '$ip', 'count': {'$sum': 1}}},
-      {'$sort': {'count': -1}},
-      {'$limit': 10}
-    ])
-
     print(f'{all_entries} logs')
     print('Methods:')
     print(f'\tmethod GET: {n_get}')
@@ -39,6 +33,3 @@ if __name__ == "__main__":
     print(f'\tmethod PATCH: {n_patch}')
     print(f'\tmethod DELETE: {n_delete}')
     print(f'{n_statuses} status check')
-    print('IPs:')
-    for ip in sorted_ips:
-        print(f"\t{ip.get('_id')}: {ip.get('count')}")
